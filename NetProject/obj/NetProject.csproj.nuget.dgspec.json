@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\NetProject\\NetProject.csproj": {}
+    "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\NetProject\\NetProject.csproj": {}
   },
   "projects": {
-    "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\NetProject\\NetProject.csproj": {
+    "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\NetProject\\NetProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\NetProject\\NetProject.csproj",
+        "projectUniqueName": "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\NetProject\\NetProject.csproj",
         "projectName": "NetProject",
-        "projectPath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\NetProject\\NetProject.csproj",
+        "projectPath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\NetProject\\NetProject.csproj",
         "packagesPath": "C:\\Users\\rl445\\.nuget\\packages\\",
-        "outputPath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\NetProject\\obj\\",
+        "outputPath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\NetProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "H:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

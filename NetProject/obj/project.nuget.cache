@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "oiiUN3wzsZ4hU40g7hI3Io2D8LWAsoiInpqNrWpx8EVHh8BCoReS4AYh1P4R3AVLug3jDitnrQgjSgfFBOmVbQ==",
+  "dgSpecHash": "fPlR66CfQyKCNdEoFiCxlqkGL7nWaD3shFWUj6Cypb48hN9a6MssanoTej1JTUeWNfCYlD9ssaYMworKhf9/KQ==",
   "success": true,
-  "projectFilePath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\NetProject\\NetProject.csproj",
+  "projectFilePath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\NetProject\\NetProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rl445\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\rl445\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",

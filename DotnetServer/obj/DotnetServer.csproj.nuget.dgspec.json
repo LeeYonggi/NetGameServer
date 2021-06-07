@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\DotnetServer\\DotnetServer.csproj": {}
+    "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\DotnetServer\\DotnetServer.csproj": {}
   },
   "projects": {
-    "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\DotnetServer\\DotnetServer.csproj": {
+    "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\DotnetServer\\DotnetServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\DotnetServer\\DotnetServer.csproj",
+        "projectUniqueName": "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\DotnetServer\\DotnetServer.csproj",
         "projectName": "DotnetServer",
-        "projectPath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\DotnetServer\\DotnetServer.csproj",
+        "projectPath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\DotnetServer\\DotnetServer.csproj",
         "packagesPath": "C:\\Users\\rl445\\.nuget\\packages\\",
-        "outputPath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\DotnetServer\\obj\\",
+        "outputPath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\DotnetServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "H:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

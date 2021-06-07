@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Urx5nDdEgZ5SdFZpPQVNfdLB5qCbhN6kemQXe32vWvWr9JevIqwJAzUk8JTCp3jO+FApOs8H7GQfueYLXmvlqw==",
+  "dgSpecHash": "RbZcnjuYCsgxKZWiQ+V1roMolO6XQh83IG8KxxRSLqeSYyb1dLdT7MSSrZ7klXsQcs6ptQu2d5AOVrSHJ9XHwA==",
   "success": true,
-  "projectFilePath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\DotnetServer\\DotnetServer\\DotnetServer.csproj",
+  "projectFilePath": "E:\\PROGRAMMING\\PROJECT\\SERVER\\NetGameServer\\DotnetServer\\DotnetServer.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

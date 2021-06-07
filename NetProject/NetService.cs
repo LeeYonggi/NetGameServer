@@ -80,16 +80,33 @@ namespace NetProject
         }
 
         /// <summary>
-        /// 
+        /// the function when socket accept client socket
         /// </summary>
         /// <param name="acceptEventArg"></param>
         private void StartAccept(SocketAsyncEventArgs acceptEventArg)
         {
+            if(acceptEventArg == null)
+            {
+                acceptEventArg = new SocketAsyncEventArgs();
+                acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
+            }
+            else
+            {
+                acceptEventArg.AcceptSocket = null;
+            }
 
+            // Semaphore thread waiting
+            mMaxNumberAcceptedClients.WaitOne();
+
+            bool willRaiseEvent = listenSocket.AcceptAsync(acceptEventArg);
+            if (!willRaiseEvent)
+            {
+                ProcessAccept(acceptEventArg);
+            }
         }
 
         /// <summary>
-        /// 
+        /// A function to run when the socket's asynchronous accept is complete.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -97,39 +114,79 @@ namespace NetProject
         {
             switch (e.LastOperation)
             {
-                case SocketAsyncOperation.None:
-                    break;
-                case SocketAsyncOperation.Accept:
-                    break;
-                case SocketAsyncOperation.Connect:
-                    break;
-                case SocketAsyncOperation.Disconnect:
-                    break;
                 case SocketAsyncOperation.Receive:
                     ProcessReceive(e);
-                    break;
-                case SocketAsyncOperation.ReceiveFrom:
-                    break;
-                case SocketAsyncOperation.ReceiveMessageFrom:
                     break;
                 case SocketAsyncOperation.Send:
                     ProcessSend(e);
                     break;
-                case SocketAsyncOperation.SendPackets:
-                    break;
-                case SocketAsyncOperation.SendTo:
-                    break;
+                default:
+                    throw new AggregateException("The last operation completed on the socket was not a receive or send");
             }
+        }
+
+        void AcceptEventArg_Completed(object sender, SocketAsyncEventArgs e)
+        {
+            ProcessAccept(e);
+        }
+
+        void ProcessAccept(SocketAsyncEventArgs e)
+        {
+            Interlocked.Increment(ref mNumConnectedSockets);
+            Console.WriteLine("Client connection accepted. There are {0} clients connected to the server", mNumConnections);
+
+            SocketAsyncEventArgs readEventArgs = mSocketPool.Pop();
+            // Get UserToken
+            //e.AcceptSocket;
+
+            bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
+            if (!willRaiseEvent)
+            {
+                ProcessReceive(readEventArgs);
+            }
+
+            // Accept the net connection request
+            StartAccept(e);
         }
 
         void ProcessReceive(SocketAsyncEventArgs e)
         {
+            // Get user token in SocketAsyncEventArgs param
+            if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
+            {
+                // increment the count of the total bytes receive by the server
+                Interlocked.Add(ref mTotalBytesRead, e.BytesTransferred);
+                Console.WriteLine("The server has read a total of {0} bytes", mTotalBytesRead);
 
+                e.SetBuffer(e.Offset, e.BytesTransferred);
+                // Send user token
+            }
+            else
+            {
+                CloseClientSocket(e);
+            }
         }
 
         void ProcessSend(SocketAsyncEventArgs e)
         {
+            if (e.SocketError == SocketError.Success)
+            {
+                // Send user token
+            }
+            else
+            {
+                CloseClientSocket(e);
+            }
+        }
 
+        private void CloseClientSocket(SocketAsyncEventArgs e)
+        {
+            Interlocked.Decrement(ref mNumConnectedSockets);
+
+            mSocketPool.Push(e);
+
+            mMaxNumberAcceptedClients.Release();
+            Console.WriteLine($"A Client has been disconnected from the server. There are {mNumConnectedSockets} clients connected to the server");
         }
 
         #region SocketAsyncEventArgsPool
