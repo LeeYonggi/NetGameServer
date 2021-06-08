@@ -87,18 +87,29 @@ namespace NetProject
         {
             if(acceptEventArg == null)
             {
+                // The single SocketAsyncEventArgs will only be used where accept
                 acceptEventArg = new SocketAsyncEventArgs();
                 acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
             }
             else
             {
+                // socket must be cleared since the context object is being reused
                 acceptEventArg.AcceptSocket = null;
             }
 
             // Semaphore thread waiting
             mMaxNumberAcceptedClients.WaitOne();
 
-            bool willRaiseEvent = listenSocket.AcceptAsync(acceptEventArg);
+            bool willRaiseEvent = true;
+            try
+            {
+                willRaiseEvent = listenSocket.AcceptAsync(acceptEventArg);
+            }
+            catch(SocketException e)
+            {
+                // Will send exception message when socket accepts
+            }
+
             if (!willRaiseEvent)
             {
                 ProcessAccept(acceptEventArg);
@@ -132,17 +143,32 @@ namespace NetProject
 
         void ProcessAccept(SocketAsyncEventArgs e)
         {
-            Interlocked.Increment(ref mNumConnectedSockets);
-            Console.WriteLine("Client connection accepted. There are {0} clients connected to the server", mNumConnections);
-
-            SocketAsyncEventArgs readEventArgs = mSocketPool.Pop();
-            // Get UserToken
-            //e.AcceptSocket;
-
-            bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
-            if (!willRaiseEvent)
+            if (e.SocketError == SocketError.Success)
             {
-                ProcessReceive(readEventArgs);
+                Interlocked.Increment(ref mNumConnectedSockets);
+                Console.WriteLine($"Client connection accepted. There are {mNumConnections} clients connected to the server");
+
+                // Get SocketAsyncEventArgs in socket pool
+                SocketAsyncEventArgs readEventArgs = mSocketPool.Pop();
+                Socket clientAcceptSocket = e.AcceptSocket;
+
+                // use nagle algorithm
+                clientAcceptSocket.NoDelay = true;
+
+                // Get UserToken
+                //e.AcceptSocket;
+
+                // Calls a function that waits for a message to be received
+                // It will call iocomplete function
+                bool willRaiseEvent = clientAcceptSocket.ReceiveAsync(readEventArgs);
+                if (!willRaiseEvent)
+                {
+                    ProcessReceive(readEventArgs);
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Client Failed accepted. Socket Error: {e.SocketError}");
             }
 
             // Accept the net connection request
@@ -188,52 +214,5 @@ namespace NetProject
             mMaxNumberAcceptedClients.Release();
             Console.WriteLine($"A Client has been disconnected from the server. There are {mNumConnectedSockets} clients connected to the server");
         }
-
-        #region SocketAsyncEventArgsPool
-        /// <summary>
-        /// Pool Manage SocketAsyncEventArgs object
-        /// </summary>
-        private class SocketAsyncEventArgsPool
-        {
-            //** Initialize in constructor
-            Stack<SocketAsyncEventArgs> mPool;
-
-            // Initialize SocketAsyncEventArgs pool to the specified size
-            public SocketAsyncEventArgsPool(int capacity)
-            {
-                mPool = new Stack<SocketAsyncEventArgs>(capacity);
-            }
-
-            /// <summary>
-            /// Push item to SocketAsyncEventArgs object pool
-            /// </summary>
-            /// <param name="item">SocektAsyncEventArgs instance</param>
-            public void Push(SocketAsyncEventArgs item)
-            {
-                if(item == null) { throw new ArgumentNullException("Item added a SocketAsyncEventArgsPool cannot be found"); }
-                lock (mPool)
-                {
-                    mPool.Push(item);
-                }
-            }
-
-            /// <summary>
-            /// Return item that taked out in SocketAsyncEventArgs stack
-            /// </summary>
-            /// <returns>SocketArgs instance</returns>
-            public SocketAsyncEventArgs Pop()
-            {
-                lock (mPool)
-                {
-                    return mPool.Pop();
-                }
-            }
-
-            public int Count
-            {
-                get { return mPool.Count; }
-            }
-        }
-        #endregion
     }
 }
