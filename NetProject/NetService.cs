@@ -155,7 +155,8 @@ namespace NetProject
                 // use nagle algorithm
                 clientAcceptSocket.NoDelay = true;
 
-                // Get UserToken
+                // Create a new UserToken and push a clean instance each time
+                // It will dispose of in server
                 //e.AcceptSocket;
 
                 // Calls a function that waits for a message to be received
